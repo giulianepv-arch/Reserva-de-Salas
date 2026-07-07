@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Horários Disponíveis</title>
+</head>
+<body>
+
+<h1>Horários Disponíveis</h1>
+
+<p id="dataSelecionada"></p>
+
+<div id="horarios"></div>
+
+<script>
+
+const parametros = new URLSearchParams(window.location.search);
+const data = parametros.get("data");
+
+document.getElementById("dataSelecionada").innerText =
+"Data selecionada: " + data;
+
+const horarios = document.getElementById("horarios");
+
+/* Horários de exemplo já reservados */
+const reservados = ["09:00", "13:00", "15:00"];
+
+for(let hora = 8; hora <= 17; hora++){
+
+    const horario =
+    String(hora).padStart(2,"0") + ":00";
+
+    const botao = document.createElement("button");
+
+    botao.innerText = horario;
+
+    if(reservados.includes(horario)){
+        botao.style.backgroundColor = "red";
+        botao.disabled = true;
+    }else{
+        botao.style.backgroundColor = "green";
+
+        botao.onclick = function() {
+            window.location.href =
+            "reserva.html?data=" + data +
+            "&hora=" + horario;
+        };
+    }
+
+    horarios.appendChild(botao);
+    horarios.appendChild(document.createElement("br"));
+}
+
+</script>
+
+</body>
+</html>

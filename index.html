@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Reserva de Salas</title>
+</head>
+<body>
+
+<h1>Olá, bem-vindo ao sistema de reserva de sala</h1>
+
+<p>
+Escolha o dia e em seguida o horário de sua reserva.
+</p>
+
+<p>
+O período de abertura da agenda é de 20 dias, podendo ser agendado um horário com até 4 horas de antecedência.
+</p>
+
+<h2>Selecione uma data</h2>
+
+<div id="calendario"></div>
+
+<script>
+const calendario = document.getElementById("calendario");
+
+const hoje = new Date();
+
+for(let i = 0; i < 20; i++) {
+
+    const data = new Date();
+    data.setDate(hoje.getDate() + i);
+
+    const botao = document.createElement("button");
+
+    const dataFormatada =
+        data.getFullYear() + "-" +
+        String(data.getMonth()+1).padStart(2,"0") + "-" +
+        String(data.getDate()).padStart(2,"0");
+
+    botao.innerText = dataFormatada;
+
+    botao.onclick = function() {
+        window.location.href =
+        "horarios.html?data=" + dataFormatada;
+    };
+
+    calendario.appendChild(botao);
+    calendario.appendChild(document.createElement("br"));
+}
+</script>
+
+</body>
+</html>

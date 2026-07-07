@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Dados da Reserva</title>
+</head>
+<body>
+
+<h1>Reserva de Sala</h1>
+
+<p id="informacoes"></p>
+
+<form id="formulario">
+
+<label>Nome:</label><br>
+<input type="text" id="nome"><br><br>
+
+<label>Sobrenome:</label><br>
+<input type="text" id="sobrenome"><br><br>
+
+<label>E-mail:</label><br>
+<input type="email" id="email"><br><br>
+
+<label>Telefone:</label><br>
+<input type="tel" id="telefone"><br><br>
+
+<label>Breve descrição da atividade:</label><br>
+<textarea id="descricao"></textarea><br><br>
+
+<h3>Itens disponíveis na sala</h3>
+
+<input type="checkbox"> Caixa de Som<br>
+<input type="checkbox"> Projetor<br>
+<input type="checkbox"> Microfone<br>
+<input type="checkbox"> Computador<br>
+<input type="checkbox"> Cadeiras Extras<br>
+<input type="checkbox"> Mesas<br>
+<input type="checkbox"> Telescópio<br>
+<input type="checkbox"> Óculos de Realidade Virtual<br><br>
+
+<button type="submit">Confirmar Reserva</button>
+
+</form>
+
+<script>
+
+const parametros = new URLSearchParams(window.location.search);
+
+const data = parametros.get("data");
+const hora = parametros.get("hora");
+
+document.getElementById("informacoes").innerText =
+"Data: " + data + " | Horário: " + hora;
+
+document.getElementById("formulario")
+.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    const nome =
+        document.getElementById("nome").value;
+
+    const sobrenome =
+        document.getElementById("sobrenome").value;
+
+    const email =
+        document.getElementById("email").value;
+
+    if(nome === "" ||
+       sobrenome === "" ||
+       email === "") {
+
+        alert("Preencha os campos obrigatórios.");
+        return;
+    }
+
+    alert("Reserva realizada com sucesso!");
+});
+
+</script>
+
+</body>
+</html>
