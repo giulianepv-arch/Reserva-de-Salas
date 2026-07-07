@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Reserva de Salas</title>
-</head>
+<link rel="stylesheet" href="style.css">
 <body>
 
 <h1>Olá, bem-vindo ao sistema de reserva de sala</h1>
@@ -25,6 +25,16 @@ const calendario = document.getElementById("calendario");
 
 const hoje = new Date();
 
+/* Datas de exemplo com todos os horários já agendados */
+const diasOcupados = [];
+const diaDemoOcupado = new Date();
+diaDemoOcupado.setDate(hoje.getDate() + 2);
+diasOcupados.push(
+    diaDemoOcupado.getFullYear() + "-" +
+    String(diaDemoOcupado.getMonth()+1).padStart(2,"0") + "-" +
+    String(diaDemoOcupado.getDate()).padStart(2,"0")
+);
+
 for(let i = 0; i < 20; i++) {
 
     const data = new Date();
@@ -39,13 +49,21 @@ for(let i = 0; i < 20; i++) {
 
     botao.innerText = dataFormatada;
 
-    botao.onclick = function() {
-        window.location.href =
-        "horarios.html?data=" + dataFormatada;
-    };
+    if(i === 0){
+        botao.classList.add("dia-hoje");
+    } else if(diasOcupados.includes(dataFormatada)){
+        botao.classList.add("dia-ocupado");
+        botao.disabled = true;
+    }
+
+    if(!botao.disabled){
+        botao.onclick = function() {
+            window.location.href =
+            "horarios.html?data=" + dataFormatada;
+        };
+    }
 
     calendario.appendChild(botao);
-    calendario.appendChild(document.createElement("br"));
 }
 </script>
 

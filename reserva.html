@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Dados da Reserva</title>
-</head>
+<link rel="stylesheet" href="style.css">
 <body>
 
 <h1>Reserva de Sala</h1>
@@ -29,14 +29,16 @@
 
 <h3>Itens disponíveis na sala</h3>
 
-<input type="checkbox"> Caixa de Som<br>
-<input type="checkbox"> Projetor<br>
-<input type="checkbox"> Microfone<br>
-<input type="checkbox"> Computador<br>
-<input type="checkbox"> Cadeiras Extras<br>
-<input type="checkbox"> Mesas<br>
-<input type="checkbox"> Telescópio<br>
-<input type="checkbox"> Óculos de Realidade Virtual<br><br>
+<div class="itens-lista">
+  <label class="item-opcao"><input type="checkbox"> Caixa de Som</label>
+  <label class="item-opcao"><input type="checkbox"> Projetor</label>
+  <label class="item-opcao"><input type="checkbox"> Microfone</label>
+  <label class="item-opcao"><input type="checkbox"> Computador</label>
+  <label class="item-opcao"><input type="checkbox"> Cadeiras Extras</label>
+  <label class="item-opcao"><input type="checkbox"> Mesas</label>
+  <label class="item-opcao"><input type="checkbox"> Telescópio</label>
+  <label class="item-opcao"><input type="checkbox"> Óculos de Realidade Virtual</label>
+</div>
 
 <button type="submit">Confirmar Reserva</button>
 
