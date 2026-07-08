@@ -106,53 +106,182 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ---------------- Calendário (index.html) ---------------- */
+/* ---------------- Calendário (index.html) — estilo "app de calendário" ---------------- */
 
 #calendario {
+  max-width: 380px;
+  margin: 28px auto 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 22px 20px;
+  box-shadow: 0 6px 20px rgba(74, 68, 88, 0.10);
+}
+
+/* cabeçalho com mês/ano e setas de navegação */
+
+.cal-cabecalho {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cal-titulo {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+.cal-nav {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface-soft);
+  color: var(--accent-dark);
+  font-size: 1.15rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  max-width: 720px;
-  margin: 24px auto 0;
+  box-shadow: none;
 }
 
-#calendario br {
-  display: none; /* o layout em flex/gap substitui as quebras de linha manuais */
+.cal-nav:hover {
+  background: var(--accent);
+  color: #FFFFFF;
+  transform: none;
 }
 
-#calendario button {
-  min-width: 130px;
-  background: var(--livre);
-  color: var(--livre-text);
+/* grade do calendário */
+
+#calendario table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#calendario th {
+  width: 14.28%;
+  padding-bottom: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  text-align: center;
+}
+
+#calendario th.fimSemana {
+  color: var(--ocupado-dark);
+}
+
+#calendario td {
+  width: 14.28%;
+  height: 42px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 2px 0;
+}
+
+/* bolha numérica de cada dia (o "círculo" no estilo Windows Calendar) */
+
+.cal-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto;
+  border-radius: 50%;
+  font-size: 0.88rem;
   font-weight: 600;
-  border: 1px solid var(--livre-dark);
+  color: var(--text);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
-#calendario button:hover:not(:disabled) {
-  background: var(--livre-dark);
-}
+/* dia disponível */
+td.disponivel { cursor: pointer; }
+td.disponivel .cal-numero { color: var(--livre-text); }
+td.disponivel:hover .cal-numero { background: var(--livre); }
+td.disponivel:active .cal-numero { transform: scale(0.9); }
 
-/* dia já com horários agendados (uso opcional via JS: classList.add('dia-ocupado')) */
-#calendario button.dia-ocupado {
+/* fim de semana (clicável, mas visualmente diferenciado) */
+td.fimSemana { cursor: pointer; }
+td.fimSemana .cal-numero { color: var(--ocupado-dark); }
+td.fimSemana:hover .cal-numero { background: var(--surface-soft); }
+td.fimSemana:active .cal-numero { transform: scale(0.9); }
+
+/* dia totalmente reservado — não clicável */
+td.ocupado { cursor: not-allowed; }
+td.ocupado .cal-numero {
   background: var(--ocupado);
   color: var(--ocupado-text);
-  border-color: var(--ocupado-dark);
 }
 
-#calendario button.dia-ocupado:hover:not(:disabled) {
-  background: var(--ocupado-dark);
+/* hoje — destaque cheio, como no Windows Calendar */
+td.hoje { cursor: pointer; }
+td.hoje .cal-numero {
+  background: #4A90E2;
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.18);
+}
+td.hoje:hover .cal-numero { background: #3E7FCB; }
+td.hoje:active .cal-numero { transform: scale(0.9); }
+
+/* dias fora do período de agendamento (passado ou além do limite de 20 dias) */
+td.inativo { cursor: default; }
+td.inativo .cal-numero { color: #C9C4D1; }
+
+/* legenda abaixo do calendário */
+
+.cal-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 16px;
+  font-size: 0.76rem;
+  color: var(--muted);
 }
 
-/* dia de hoje em destaque (uso opcional via JS: classList.add('dia-hoje')) */
-#calendario button.dia-hoje {
-  background: var(--hoje);
-  color: #5C4A12;
-  border-color: var(--hoje-dark);
+.cal-legenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-#calendario button.dia-hoje:hover:not(:disabled) {
-  background: var(--hoje-dark);
+.cal-legenda .bola {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.cal-legenda .bola.disponivel { background: var(--livre); }
+.cal-legenda .bola.ocupado { background: var(--ocupado); }
+.cal-legenda .bola.hoje { background: #4A90E2; }
+.cal-legenda .bola.inativo { background: #E4E1E9; }
+
+/* ---------------- Botão "voltar" (horarios.html / reserva.html) ---------------- */
+
+.btn-voltar {
+  display: inline-block;
+  margin: 0 auto 18px;
+  background: var(--surface);
+  color: var(--accent-dark);
+  border: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.btn-voltar:hover {
+  background: var(--surface-soft);
+  border-color: var(--accent);
 }
 
 /* ---------------- Horários (horarios.html) ---------------- */

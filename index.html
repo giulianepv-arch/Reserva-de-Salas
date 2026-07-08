@@ -3,53 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Reserva de Salas</title>
-
-<style>
-
-body{
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
-table{
-    margin: auto;
-    border-collapse: collapse;
-}
-
-th, td{
-    width: 60px;
-    height: 60px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-.disponivel{
-    background-color: #90EE90;
-    cursor: pointer;
-}
-
-.ocupado{
-    background-color: #FF6B6B;
-    color: white;
-}
-
-.fimSemana{
-    background-color: #D3D3D3;
-    color: #666;
-}
-
-.hoje{
-    background-color: #4A90E2;
-    color: white;
-    font-weight: bold;
-}
-
-.inativo{
-    background-color: #EEEEEE;
-    color: #999;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -68,12 +22,7 @@ O período de abertura da agenda é de 20 dias, podendo ser agendado um horário
 
 <script>
 
-const calendario = document.getElementById("calendario");
-
-const hoje = new Date();
-
-const ano = hoje.getFullYear();
-const mes = hoje.getMonth();
+const calendarioDiv = document.getElementById("calendario");
 
 const nomesMeses = [
 "Janeiro","Fevereiro","Março","Abril",
@@ -81,11 +30,188 @@ const nomesMeses = [
 "Setembro","Outubro","Novembro","Dezembro"
 ];
 
-const diasSemana = [
-"Dom","Seg","Ter","Qua","Qui","Sex","Sáb"
-];
+const diasSemana = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 
+const hoje = new Date();
+hoje.setHours(0,0,0,0);
+
+/* Limite de abertura da agenda: 20 dias a partir de hoje */
+const limiteAgenda = new Date(hoje);
+limiteAgenda.setDate(hoje.getDate() + 20);
+
+function formatarData(data){
+    return data.getFullYear() + "-" +
+        String(data.getMonth()+1).padStart(2,"0") + "-" +
+        String(data.getDate()).padStart(2,"0");
+}
+
+/* Exemplo de dia com todos os horários já ocupados */
 const diasOcupados = [];
+const diaDemoOcupado = new Date(hoje);
+diaDemoOcupado.setDate(hoje.getDate() + 3);
+diasOcupados.push(formatarData(diaDemoOcupado));
 
-/* Exemplo de dias ocupados */
-let
+let mesExibido = hoje.getMonth();
+let anoExibido = hoje.getFullYear();
+
+function irParaHorarios(dataFormatada){
+    window.location.href = "horarios.html?data=" + dataFormatada;
+}
+
+function renderizarCalendario(){
+
+    calendarioDiv.innerHTML = "";
+
+    /* ---------- Cabeçalho com navegação entre meses ---------- */
+
+    const cabecalho = document.createElement("div");
+    cabecalho.classList.add("cal-cabecalho");
+
+    const btnAnterior = document.createElement("button");
+    btnAnterior.classList.add("cal-nav");
+    btnAnterior.innerText = "‹";
+    btnAnterior.title = "Mês anterior";
+    btnAnterior.onclick = function(){
+        mesExibido--;
+        if(mesExibido < 0){
+            mesExibido = 11;
+            anoExibido--;
+        }
+        renderizarCalendario();
+    };
+
+    const titulo = document.createElement("span");
+    titulo.classList.add("cal-titulo");
+    titulo.innerText = nomesMeses[mesExibido] + " de " + anoExibido;
+
+    const btnProximo = document.createElement("button");
+    btnProximo.classList.add("cal-nav");
+    btnProximo.innerText = "›";
+    btnProximo.title = "Próximo mês";
+    btnProximo.onclick = function(){
+        mesExibido++;
+        if(mesExibido > 11){
+            mesExibido = 0;
+            anoExibido++;
+        }
+        renderizarCalendario();
+    };
+
+    cabecalho.appendChild(btnAnterior);
+    cabecalho.appendChild(titulo);
+    cabecalho.appendChild(btnProximo);
+    calendarioDiv.appendChild(cabecalho);
+
+    /* ---------- Tabela do calendário ---------- */
+
+    const tabela = document.createElement("table");
+
+    const thead = document.createElement("thead");
+    const linhaCabecalho = document.createElement("tr");
+
+    diasSemana.forEach(function(nomeDia, indice){
+        const th = document.createElement("th");
+        th.innerText = nomeDia;
+        if(indice === 0 || indice === 6){
+            th.classList.add("fimSemana");
+        }
+        linhaCabecalho.appendChild(th);
+    });
+
+    thead.appendChild(linhaCabecalho);
+    tabela.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    const primeiroDiaMes = new Date(anoExibido, mesExibido, 1);
+    const ultimoDiaMes = new Date(anoExibido, mesExibido + 1, 0);
+    const diaSemanaInicio = primeiroDiaMes.getDay();
+    const totalDiasMes = ultimoDiaMes.getDate();
+
+    let linha = document.createElement("tr");
+
+    for(let i = 0; i < diaSemanaInicio; i++){
+        const celulaVazia = document.createElement("td");
+        celulaVazia.classList.add("inativo");
+        celulaVazia.innerHTML = "<span class='cal-numero'></span>";
+        linha.appendChild(celulaVazia);
+    }
+
+    let colunaAtual = diaSemanaInicio;
+
+    for(let diaAtual = 1; diaAtual <= totalDiasMes; diaAtual++){
+
+        if(colunaAtual === 7){
+            tbody.appendChild(linha);
+            linha = document.createElement("tr");
+            colunaAtual = 0;
+        }
+
+        const dataCelula = new Date(anoExibido, mesExibido, diaAtual);
+        dataCelula.setHours(0,0,0,0);
+
+        const dataFormatada = formatarData(dataCelula);
+        const diaDaSemana = dataCelula.getDay();
+
+        const celula = document.createElement("td");
+        celula.innerHTML = "<span class='cal-numero'>" + diaAtual + "</span>";
+
+        if(dataCelula.getTime() < hoje.getTime() || dataCelula.getTime() > limiteAgenda.getTime()){
+
+            /* fora do período de agendamento permitido */
+            celula.classList.add("inativo");
+
+        } else if(dataCelula.getTime() === hoje.getTime()){
+
+            celula.classList.add("hoje");
+            celula.onclick = function(){ irParaHorarios(dataFormatada); };
+
+        } else if(diasOcupados.includes(dataFormatada)){
+
+            celula.classList.add("ocupado");
+
+        } else if(diaDaSemana === 0 || diaDaSemana === 6){
+
+            celula.classList.add("fimSemana");
+            celula.onclick = function(){ irParaHorarios(dataFormatada); };
+
+        } else {
+
+            celula.classList.add("disponivel");
+            celula.onclick = function(){ irParaHorarios(dataFormatada); };
+        }
+
+        linha.appendChild(celula);
+        colunaAtual++;
+    }
+
+    while(colunaAtual < 7){
+        const celulaVazia = document.createElement("td");
+        celulaVazia.classList.add("inativo");
+        celulaVazia.innerHTML = "<span class='cal-numero'></span>";
+        linha.appendChild(celulaVazia);
+        colunaAtual++;
+    }
+
+    tbody.appendChild(linha);
+    tabela.appendChild(tbody);
+    calendarioDiv.appendChild(tabela);
+
+    /* ---------- Legenda ---------- */
+
+    const legenda = document.createElement("div");
+    legenda.classList.add("cal-legenda");
+    legenda.innerHTML =
+        "<span><i class='bola disponivel'></i> Disponível</span>" +
+        "<span><i class='bola ocupado'></i> Totalmente reservado</span>" +
+        "<span><i class='bola hoje'></i> Hoje</span>" +
+        "<span><i class='bola inativo'></i> Fora do período</span>";
+    calendarioDiv.appendChild(legenda);
+}
+
+renderizarCalendario();
+
+</script>
+
+</body>
+</html>
