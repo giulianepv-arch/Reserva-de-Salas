@@ -3,7 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>Reserva de Salas</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+table{
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th, td{
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.disponivel{
+    background-color: #90EE90;
+    cursor: pointer;
+}
+
+.ocupado{
+    background-color: #FF6B6B;
+    color: white;
+}
+
+.fimSemana{
+    background-color: #D3D3D3;
+    color: #666;
+}
+
+.hoje{
+    background-color: #4A90E2;
+    color: white;
+    font-weight: bold;
+}
+
+.inativo{
+    background-color: #EEEEEE;
+    color: #999;
+}
+
+</style>
+</head>
+
 <body>
 
 <h1>Olá, bem-vindo ao sistema de reserva de sala</h1>
@@ -16,56 +64,28 @@ Escolha o dia e em seguida o horário de sua reserva.
 O período de abertura da agenda é de 20 dias, podendo ser agendado um horário com até 4 horas de antecedência.
 </p>
 
-<h2>Selecione uma data</h2>
-
 <div id="calendario"></div>
 
 <script>
+
 const calendario = document.getElementById("calendario");
 
 const hoje = new Date();
 
-/* Datas de exemplo com todos os horários já agendados */
+const ano = hoje.getFullYear();
+const mes = hoje.getMonth();
+
+const nomesMeses = [
+"Janeiro","Fevereiro","Março","Abril",
+"Maio","Junho","Julho","Agosto",
+"Setembro","Outubro","Novembro","Dezembro"
+];
+
+const diasSemana = [
+"Dom","Seg","Ter","Qua","Qui","Sex","Sáb"
+];
+
 const diasOcupados = [];
-const diaDemoOcupado = new Date();
-diaDemoOcupado.setDate(hoje.getDate() + 2);
-diasOcupados.push(
-    diaDemoOcupado.getFullYear() + "-" +
-    String(diaDemoOcupado.getMonth()+1).padStart(2,"0") + "-" +
-    String(diaDemoOcupado.getDate()).padStart(2,"0")
-);
 
-for(let i = 0; i < 20; i++) {
-
-    const data = new Date();
-    data.setDate(hoje.getDate() + i);
-
-    const botao = document.createElement("button");
-
-    const dataFormatada =
-        data.getFullYear() + "-" +
-        String(data.getMonth()+1).padStart(2,"0") + "-" +
-        String(data.getDate()).padStart(2,"0");
-
-    botao.innerText = dataFormatada;
-
-    if(i === 0){
-        botao.classList.add("dia-hoje");
-    } else if(diasOcupados.includes(dataFormatada)){
-        botao.classList.add("dia-ocupado");
-        botao.disabled = true;
-    }
-
-    if(!botao.disabled){
-        botao.onclick = function() {
-            window.location.href =
-            "horarios.html?data=" + dataFormatada;
-        };
-    }
-
-    calendario.appendChild(botao);
-}
-</script>
-
-</body>
-</html>
+/* Exemplo de dias ocupados */
+let
