@@ -4,9 +4,15 @@
 <meta charset="UTF-8">
 <title>Dados da Reserva</title>
 <link rel="stylesheet" href="style.css">
+</head>
+
 <body>
 
 <h1>Reserva de Sala</h1>
+
+<button onclick="history.back()">
+← Voltar aos Horários
+</button>
 
 <p id="informacoes"></p>
 
@@ -30,15 +36,42 @@
 <h3>Itens disponíveis na sala</h3>
 
 <div class="itens-lista">
-  <label class="item-opcao"><input type="checkbox"> Caixa de Som</label>
-  <label class="item-opcao"><input type="checkbox"> Projetor</label>
-  <label class="item-opcao"><input type="checkbox"> Microfone</label>
-  <label class="item-opcao"><input type="checkbox"> Computador</label>
-  <label class="item-opcao"><input type="checkbox"> Cadeiras Extras</label>
-  <label class="item-opcao"><input type="checkbox"> Mesas</label>
-  <label class="item-opcao"><input type="checkbox"> Telescópio</label>
-  <label class="item-opcao"><input type="checkbox"> Óculos de Realidade Virtual</label>
+
+<label class="item-opcao">
+<input type="checkbox"> Caixa de Som
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Projetor
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Microfone
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Computador
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Cadeiras Extras
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Mesas
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Telescópio
+</label><br>
+
+<label class="item-opcao">
+<input type="checkbox"> Óculos de Realidade Virtual
+</label>
+
 </div>
+
+<br>
 
 <button type="submit">Confirmar Reserva</button>
 
@@ -68,15 +101,17 @@ document.getElementById("formulario")
     const email =
         document.getElementById("email").value;
 
-    if(nome === "" ||
-       sobrenome === "" ||
-       email === "") {
-
+    if(
+        nome === "" ||
+        sobrenome === "" ||
+        email === ""
+    ){
         alert("Preencha os campos obrigatórios.");
         return;
     }
 
     alert("Reserva realizada com sucesso!");
+
 });
 
 </script>
